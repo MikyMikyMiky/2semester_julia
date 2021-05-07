@@ -51,33 +51,6 @@ end
 return y
 end
 
-#Задача 8
-function gcdex(m::Int,n::Int)
-    a, b = m, n
-u_a, v_a = 1, 0
-u_b, v_b = 0, 1
-while b != 0
-    k = a÷b
-    a, b = b, a % b 
-    u, v = u_a, v_a
-    u_a, v_a = u_b, u_a
-    u_b, v_b = u-k*u_b, v-k*v_b
-end
-if u_a<0
-    u_a+=n
-end
-return u_a
-end
-
-#Задача 9
-function inv(m::Integer,n::Integer)
-    if (gcd(m,n)>1)
-        return nothing
-    else
-        return gcdex(m,n)
-    end
-end
-
 #Задача 4
 function isprime(n::Int)::Bool
     d=2
@@ -135,6 +108,52 @@ function factor(n)
         push!(v_k,1)
     end
     return v_d,v_k
+end
+
+#Задача 7
+function euler_function(n)
+    if (isprime(n))
+        return n-1
+    else
+        a,b=factor(n)
+        res=1
+        for i in 1:length(a)
+            if (b[i]==1)
+                a[i]-=1
+            else
+                a[i] = a[i]^b[i] - a[i]^(b[i]-1)
+            end
+            res*=a[i]
+        end
+        return res
+    end
+end
+        
+#Задача 8
+function gcdex(m::Int,n::Int)
+    a, b = m, n
+u_a, v_a = 1, 0
+u_b, v_b = 0, 1
+while b != 0
+    k = a÷b
+    a, b = b, a % b 
+    u, v = u_a, v_a
+    u_a, v_a = u_b, u_a
+    u_b, v_b = u-k*u_b, v-k*v_b
+end
+if u_a<0
+    u_a+=n
+end
+return u_a
+end
+
+#Задача 9
+function inv(m::Integer,n::Integer)
+    if (gcd(m,n)>1)
+        return nothing
+    else
+        return gcdex(m,n)
+    end
 end
 
 #Задача 10
