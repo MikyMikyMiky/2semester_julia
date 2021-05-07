@@ -33,7 +33,7 @@ function fibonacci(n::Integer)
     return rc
 end
 
-#Задача 2
+#Задача 3
 function log(a::Real,x::Real,ε::Real)
     z, t, y = x, 1, 0
 while (z>a || z<1/a || t>ε)
@@ -51,7 +51,7 @@ end
 return y
 end
 
-#Задача 3
+#Задача 8
 function gcdex(m::Int,n::Int)
     a, b = m, n
 u_a, v_a = 1, 0
@@ -69,7 +69,7 @@ end
 return u_a
 end
 
-#Задача 4
+#Задача 9
 function inv(m::Integer,n::Integer)
     if (gcd(m,n)>1)
         return nothing
@@ -78,7 +78,7 @@ function inv(m::Integer,n::Integer)
     end
 end
 
-#Задача 5
+#Задача 4
 function isprime(n::Int)::Bool
     d=2
     while (d*d<=n)
@@ -90,7 +90,7 @@ function isprime(n::Int)::Bool
     return true
 end
 
-#Задача 6
+#Задача 5
 function eratosphen(n::Integer)
     ser=fill(true,n)
     ser[1]=false
@@ -106,7 +106,7 @@ function eratosphen(n::Integer)
     return findall(ser)
 end
 
-#Задача 7
+#Задача 6
 function factor(n)
     if (isprime(n))
         return n,1
@@ -137,8 +137,8 @@ function factor(n)
     return v_d,v_k
 end
 
-#Задача 8
-function del0(n::Integer)
+#Задача 10
+function zerodivisors(n::Integer)
     v = [1]
     for i in 2:n
         if (gcd(n,i)==1)
@@ -148,7 +148,7 @@ function del0(n::Integer)
     return v
 end
 
-#Задача 9
+#Задача 11
 function allnilpotents(n::Integer)
     nil = []
     v_d,nothing=factor(n)
@@ -163,7 +163,7 @@ function allnilpotents(n::Integer)
     return nil
 end
 
-#Задача 10
+#Задача 13
 function bisect(f::Function, a, b, ε)
     y_a=f(a)
     while b-a > ε
