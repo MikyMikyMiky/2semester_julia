@@ -117,7 +117,7 @@ end
 #Задача 9 
 
 reverse(a) = a[end:-1:begin]
-
+ 
 #Задача 10
 
 function cyclshift(a::AbstractVector, k::Int) 
