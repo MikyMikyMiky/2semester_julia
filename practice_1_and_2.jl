@@ -1,3 +1,4 @@
+#Не нашел нумерацию задач
 function sort_puz!(v::Array)
     for i in 1:(length(v)-1)
         for j in 1:(length(v)-1)
