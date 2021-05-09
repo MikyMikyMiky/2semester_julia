@@ -16,33 +16,48 @@ end
 
 #Задача 2
 function sort_b(A::Vector{T},b::Int64)::Vector{T} where T
+    res = copy(A)
     move = 1
     for i in 1:length(A)
-        if A[i]<=b
-            A[move+1:i],A[move]=A[move:i-1],A[i]
-            if A[move]<b
+        if res[i]<=b
+            res[move+1:i],res[move]=res[move:i-1],res[i]
+            if res[move]<b
                 move = move + 1
             end
         end
     end
-    return A
+    return res
 end
 
 function sort_b_arr(A::Vector{T},b::Int64)::Vector{T} where T
     A1 = Vector{Int}(undef,0)
     A2 = Vector{Int}(undef,0)
     A3 = Vector{Int}(undef,0)
-    for i in 1:length(A)
-        if (A[i]<4)
-            return 0
-            return 0
-            return 0
+    for a in A
+        if (a<b)
+            push!(A1,a)
+        elseif (a==b)
+            push!(A2,a)
+        elseif (a>b)
+            push!(A3,a)
         end
     end
-    return 0
+    return append!(append!(A1,A2),A3)
 end
 
 #Задача 3
+function sort_b_arr_2(A::Vector{T},b::Int64)::Vector{T} where T
+    A1 = Vector{Int}(undef,0)
+    A2 = Vector{Int}(undef,0)
+    for a in A
+        if (a<=b)
+            push!(A1,a)
+        else
+            push!(A2,a)
+        end
+    end
+    return append!(A1,A2)
+end
 
 #Задача 4
 function comb(n,k)
