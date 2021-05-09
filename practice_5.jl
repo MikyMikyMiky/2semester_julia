@@ -118,3 +118,74 @@ function ÷(a::Poly,b::Poly)
 end
 
 /(a::Poly,b::Poly)=divrem(a.a,b.a)
+
+#Задача 7
+function diffpoly(p)
+    res = zeros(length(p.a)-1)
+    for i in 1:length(res)
+        res[i]=(length(p.a)-i)*p.a[i]
+    end
+    return Poly{Real}(res)
+end
+
+function intpoly(p)
+    res = zeros(length(p.a))
+    for i in 1:length(res)
+        res[i]=p.a[i]/(length(p.a)-i+1)
+    end
+    return Poly{Real}(res)
+end
+
+#Задача 8
+function currentstd(series)
+    S¹ = eltype(series)(0)
+    S² = eltype(series)(0)
+    D=0
+    M=0
+    std = zeros(length(series))
+    for (n,a) in enumerate(series)
+        S¹ += a
+        S² += a^2
+        M = S¹/n
+        D = S²/n-M^2
+        std[n] = sqrt(D)
+    end
+    return std
+end
+
+#Задача 9
+function sub_sum(series)
+    elem = series[1]
+	sum = 0
+	max_sum = 0
+for i in 1:length(series)
+	sum += series[i]
+	elem = min(elem, sum - max_sum)
+	max_sum = max(max_sum, sum)
+end
+return max_sum
+end
+
+#Задача 10
+function index_max_sub_sum(series)
+    elem = series[1]
+	elem_l = 1
+	elem_r = 1
+	sum = 0
+	max_sum = 0
+	max_pos = 0
+for i in 1:length(series)
+	sum += series[i]
+	cur = sum - max_sum
+	if (cur > elem)
+		elem = cur
+		elem_l = max_pos + 1
+		elem_r = i
+    end
+	if (sum < max_sum)
+		max_sum = sum
+		max_pos = i
+    end
+end
+return (elem_l,elem_r)
+end
