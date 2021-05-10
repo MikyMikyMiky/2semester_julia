@@ -19,7 +19,6 @@ using .Vector2Ds
 randpoints(random::Function, num::Int) = [(random(),random()) for _ in 1:num]
 
 #Задача 2
-
 #Все есть в Plots
 
 #Задача 3
