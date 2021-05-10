@@ -166,7 +166,31 @@ end
 
 #Задача 9
 
-#Сделаю
+#Задача 9
+
+function inv(A)
+    if (det_(A)==0)
+        return nothing 
+    end
+    B=Matrix{Float64}(undef,length(A),2*length(A)) #я не нашел как присоеденить матрицы чтоб стала одна расширенная, append! делает немного по другому
+    for i in 1:length(A)
+        for j in 1:(2*length(A))
+            if (i <= length(A))
+                B[i][j]=A[i][j]
+            elseif (i==j)
+                B[i][j]=1
+            else
+                B[i][j]=0
+            end
+        end
+    end
+    convert!(B)
+    linsolve(B,zeros(length(A)))
+    for i in 1:length(A)
+        B[i][:] = (1/B[i][i])*B[i][:]
+    end
+    return B[:,(length(A)+1):(2*length(A))]
+end
 
 #Задача 10
 
@@ -182,8 +206,46 @@ end
 
 #Задача 11
 
-#Сделаю
+function FSS(Ab)
+    B=copy(Ab)
+    if (length(B)==rang(B))
+        return zeros(length(B))
+    else
+        B=copy(Ab)
+        b = []
+        curr_row = [[]]
+        A = []
+        for i in 1:length(B)
+            push!(b,Ab[i][length(B[1])])
+            for j in 1:(length(B[1])-1)
+                push!(curr_row[1],B[i][j])
+            end
+            A = append!(A,curr_row)
+            curr_row = [[]]
+        end
+        linsolve(A,b)
+    end
+end
 
 #Задача 12
 
-#Сделаю
+function SLAE_sol(Ab)
+    B=copy(Ab)
+    b = []
+    curr_row = [[]]
+    A = []
+    for i in 1:length(B)
+        push!(b,Ab[i][length(B[1])])
+        for j in 1:(length(B[1])-1)
+            push!(curr_row[1],B[i][j])
+        end
+        A = append!(A,curr_row)
+        curr_row = [[]]
+    end
+    linsolve(A,b)
+    for i in 1:length(B)
+        if (A[i]==zeros(length(A[1])) && b[i]!=0)
+            return nothing
+        end
+    end
+end
