@@ -29,17 +29,14 @@ function next_permute!(p::AbstractVector)
             break
         end
     end
-    if k == firstindex(p)-1 # <=> p[begin]>p[begin+1]>...>p[end]
+    if k == firstindex(p)-1
         return nothing
     end
-    #УТВ: p[k]<p[k+1] > p[k+2]>...>p[end]
     i=k+1
     while i < lastindex(p) && p[i+1] > p[k]
         i+=1
     end
-    #УТВ: p[i] - наименьшее из всех p[k+1:end], большее p[k]
     p[k], p[i] = p[i], p[k]
-    #УТВ: по-прежнему p[k+1]>...>p[end]
     reverse!(@view p[k+1:end])
     return p
 end
@@ -87,52 +84,4 @@ function floyd(G::AbstractMatrix)
         end
     end
     return C
-end
-
-#Задача 5/ / / / // 
-function floyd_next(G::AbstractMatrix)
-    n=size(G,1)
-    C=Array{eltype(G),2}(undef,n,n)
-    C=G
-    for k in 1:n, i in 1:n, j in 1:n
-        if C[i,j] > C[i,k]+C[k,j]
-            C[i,j] = C[i,k]+C[k,j]
-        end
-    end
-    return C
-end
-
-#Задача 7
-function dijkstra(G::AbstractMatrix,s::Integer)
-    n = size(G,1)
-    d = [Inf]
-    used = [false]
-    p = zeros(n)
-    for _ in 2:n
-        push!(d,Inf)
-        push!(used,false)
-    end
-
-    for _ in 1:n
-        v = -1
-        for j in 1:n
-            if !used[j] && (v==-1 || d[j] < d[v])
-                v=j
-            end
-        end
-        if d[v] == Inf
-            break
-        end
-        used[v] = true
-
-        for j in 1:n
-            to = j
-            len = G[v,j]
-            if d[v] + len < d[to]
-                d[to] = d[v] + len
-                p[to] = v
-            end
-        end
-    end
-    return d
 end
