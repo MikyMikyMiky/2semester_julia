@@ -3,12 +3,12 @@ function comm(A)
     for i in 1:size(A)[1]
         for j in 1:size(A)[2]
             if (A[i,j]==0 && i!=j)
-                A[i,j]=Inf
+                A[i,j]=1e8
             end
         end
     end
     sum = 0
-    min = Inf
+    min = 1e8
     for n in permutations(size(A)[1])
         for i in 1:size(A)[1]
             sum += A[n[i],n[i+1 > size(A)[1] ? 1 : i+1]]
@@ -60,7 +60,7 @@ permutations(n::Integer) = permutations(collect(1:n))
 function ford_bellman(G::AbstractMatrix, s::Integer)
     n = size(G,1)
     C = G[s,:]
-    for k in 1:n-2, j in 2:n, i in 1:n
+    for k in 0:n-2, j in 1:n, i in 1:n
         if C[j] > C[i] + G[i,j]
             C[j] = C[i] + G[i,j]
         end
@@ -69,8 +69,11 @@ function ford_bellman(G::AbstractMatrix, s::Integer)
 end
 
 ##Протестировал
+#S = [0 4 3 5;4 0 0 5;0 0 0 6; 5 3 5.0 0]
+#res = [11.0 9.0 0.0 6.0] - все верно
 
 #Задача 3
+#O(n^3), т.к мы ищем минимальное(1 цикл) для пути из одной в каждую другую(2 цикл) с n-1 пробегами(3 цикл)
 #Воспользоваться разреженными матрицами, и сравнивать пути только для сущ. ребер
 
 #Задача 4
@@ -79,9 +82,42 @@ function floyd(G::AbstractMatrix)
     C=Array{eltype(G),2}(undef,n,n)
     C=G
     for k in 1:n, i in 1:n, j in 1:n
-        if C[i,j] > C[i,k]+C[k,j]
-            C[i,j] = C[i,k]+C[k,j]
-        end
+        C[i,j]=min(C[i,j], C[i,k]+C[k,j])
     end
     return C
+end
+
+##Протестировал
+#S = [0 4 3 5;4 0 0 5;0 0 0 6; 5 3 5.0 0]
+#res = [0.0  4.0  3.0  5.0 4.0  0.0  7.0  5.0 11.0  9.0  0.0  6.0 5.0  3.0  5.0  0.0] - все верно
+
+#Задача 5 
+function floyd_next(G::AbstractMatrix)
+    n=size(G,1)
+    C=Array{eltype(G),2}(undef,n,n)
+    next=Array{eltype(G),2}(undef,n,n)
+    for i in 1:n
+        for j in 1:n
+            next[i,j] = j
+        end
+    end
+    C=G
+    for k in 1:n, i in 1:n, j in 1:n
+        if C[i,j] > C[i,k]+C[k,j]
+            C[i,j]=min(C[i,j], C[i,k]+C[k,j])
+            next[i,j] = k
+        end
+    end
+    return C,next
+end
+
+#Задача 6
+function optpath_floyd(next::AbstractMatrix, i::Integer, j::Integer)
+    path= [i]
+    fin = i
+    while (fin!=j)
+        push!(path,next[fin,j])
+        fin = next[fin,j]
+    end
+    return path
 end
